@@ -75,6 +75,9 @@ footer{
 .clicked{
     background-color: cornflowerblue;
 }
+.red{
+    background-color: red;
+}
 .contain-footer{
     height: 100%;
     width: 80%;
