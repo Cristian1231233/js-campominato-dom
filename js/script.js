@@ -8,6 +8,13 @@ document.querySelector('.play').addEventListener('click', function(){
      const level = document.getElementById('selezione').value;
      console.log(level);
      
+     let tentativi = 0;
+     const listaTentativi = [];
+     
+     
+     const BOMBS_NUMBER = 16;
+     
+
      let numeroCelle;
      if(level === 'easy'){
          numeroCelle = 100;
@@ -19,7 +26,8 @@ document.querySelector('.play').addEventListener('click', function(){
          numeroCelle = 49;
          console.log(numeroCelle);
      }
-
+     
+     
      
      
      const celleForRow = Math.sqrt(numeroCelle);
@@ -31,13 +39,15 @@ document.querySelector('.play').addEventListener('click', function(){
      document.querySelector('main').innerHTML = '';
      generateGrid();
  
-     function generateGrid(){
+    function generateGrid(){
          const grid = document.createElement('div');
  
          grid.className = 'countain-wrap';
  
          document.querySelector('main').append(grid);
  
+         
+
          for( let i = 1; i <= numeroCelle; i++){
          //    creo ogni cella
             const cella = document.createElement('div');
@@ -54,32 +64,58 @@ document.querySelector('.play').addEventListener('click', function(){
             
          }
           
-         const BOMBS_NUMBER = 16;
-         const bombs = generateBombs();
+         
+          const bombs = generateBombs();
+          function eventClick(event){
 
-           function eventClick(event){
-               console.log(event.target.innerText);
-               this.classList.add('clicked');
+            const cellValue = parseInt(event.target.innerText);
+
+            if(bombs.includes(cellValue)){
+                // fine partita
+                endGame()
+                this.classList.add('red');
+            }else if(!listaTentativi.includes(cellValue)){
+                tentativi++;
+                listaTentativi.push(cellValue);
+            }
+             console.log(listaTentativi);
+
+            console.log(event.target.innerText);
+            this.classList.add('clicked');
                
-           }
+          }
 
+           function endGame(){
+               console.log('End game');
+           }
         
          
- 
-         function generateBombs(){
-             const bombs = [];
-              console.log('BOMBS_NUMBER', BOMBS_NUMBER);
+        //creo una funzione che genera le bombe
+        function generateBombs(){
+            // array di bombe vuoto
+            const bombs = [];
+            console.log(bombs);
+            console.log('BOMBS_NUMBER', BOMBS_NUMBER);
 
-             while(bombs.length < BOMBS_NUMBER){
-                 const bomb = randomBomb(1, numeroCelle);
-               if(bombs.includes(bomb)){
-                bombs.push(bomb);
-               }
+            // creo un ciclo while in cui le bombe totali
+            //  devono essere inferiori a 16 cioè a BOMBS_NUMBER
+            while(bombs.length < BOMBS_NUMBER){
+                
+                // creo una costante che contiene una funzione
+                //  che genera numeri random da 1 a numero celle
+                const bomb = randomBomb(1, numeroCelle);
+                
+                // se la bomba non è all'interno dell'array
+                if(!bombs.includes(bomb)){
+                    // pusho la bomba nell'array
+                    bombs.push(bomb);
+                }
                  
-             }
-             return bombs;
-         }
-     }
+            }
+            // mi restituisce le bombe
+            return bombs;
+        }
+    }
  
 
 
