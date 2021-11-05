@@ -12,10 +12,11 @@ document.querySelector('.play').addEventListener('click', function(){
      const listaTentativi = [];
      
      
-     const BOMBS_NUMBER = 16;
+     const BOMBS_NUMBER = 17;
      
 
      let numeroCelle;
+     
      if(level === 'easy'){
          numeroCelle = 100;
          console.log(numeroCelle);
@@ -63,7 +64,8 @@ document.querySelector('.play').addEventListener('click', function(){
                 
             
          }
-          
+         const tentativiMax = numeroCelle - BOMBS_NUMBER;
+         console.log('tentativi Max', tentativiMax);
          
           const bombs = generateBombs();
           function eventClick(event){
@@ -83,10 +85,19 @@ document.querySelector('.play').addEventListener('click', function(){
             console.log(event.target.innerText);
             this.classList.add('clicked');
                
+            if(tentativi === tentativiMax){
+                endGame();
+            }
           }
 
            function endGame(){
                console.log('End game');
+               const cells = document.getElementsByClassName('red');
+               for( let i = 0; i < cells.length; i++){
+                   if(bombs.includes(cells[i + 1])){
+                       cells[i].classList.add('red');
+                   }
+               }
            }
         
          
